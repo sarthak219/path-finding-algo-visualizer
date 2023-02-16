@@ -1,0 +1,147 @@
+:root{
+    --bg-color:#B9F3FC;
+    /* --bg-color:rgb(91, 91, 91); */
+    --maze-border-color: rgb(251, 251, 251);
+    --maze-bg-color: rgb(241, 241, 241);
+    --maze-border-color: rgb(182, 204, 255);
+    /* --maze-border-color: rgb(102, 102, 102); */
+    /* --maze-bg-color: rgb(0, 0, 0); */
+    /* --wall-bg-color: rgb(162, 162, 162); */
+    --wall-bg-color: rgb(7, 0, 71);
+    --wall-border-color: rgb(0, 0, 0);
+    --start-bg-color: rgb(225, 170, 19);
+    --goal-bg-color: rgb(49, 179, 23);
+    --path-color: rgb(173, 50, 155);
+    --explored-color-final: rgb(28, 215, 224);
+    --explored-color-initial: rgb(236, 193, 0);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
+    background-color: var(--bg-color);
+}
+
+h1.title {
+    color: white;
+    /* text-shadow: 1px 1px 5px rgb(120, 120, 120); */
+}
+
+.options-container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: #423c8f;
+}
+
+
+.maze {
+    height: 85vh;
+    aspect-ratio: 1;
+    background-color: var(--maze-bg-color);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.maze-row{
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.cell{
+    width: 100%;
+    height: 100%;
+    background-color: var(--maze-bg-color);
+    border: .5px solid var(--maze-border-color);
+}
+
+
+.start, .goal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    position: relative;
+    cursor: pointer;
+}
+
+.start {
+    background-color: var(--start-bg-color) !important;
+}
+
+.start::before,
+.goal.goal::before {
+    position: absolute;
+    font-family: "Font Awesome 5 Free"; 
+    font-weight: 900; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.start::before {
+    content: "\f101";
+}
+
+.goal {
+    background-color: var(--goal-bg-color) !important;
+}
+
+.goal::before {
+    /* content: "G"; */
+    content: "\f140";
+}
+
+.path {
+    background-color: var(--path-color) !important;
+    border-color: transparent !important;
+    scale: 0;
+    animation: pop-in 300ms cubic-bezier(0.59, -0.36, 0.47, 1.92) forwards !important;
+    z-index: 10;
+}
+
+.wall {
+    background-color: var(--wall-bg-color) !important;
+    border-color: transparent;
+    scale: 0;
+    animation: pop-in 300ms cubic-bezier(0.59, -0.36, 0.47, 1.92) forwards;
+}
+
+.explored {
+    background-color: var(--explored-color-intial);
+    border-color: white;
+    scale: 0;
+    animation: pop-in 200ms cubic-bezier(0.59, -0.36, 0.47, 1.92) forwards,
+               change-color 2s cubic-bezier(0.59, -0.36, 0.47, 1.92) forwards;
+}
+
+@keyframes pop-in {
+    0%{
+        scale: 0;
+    }
+    100%{
+        scale: 1;
+    }
+}
+
+@keyframes fade-in {
+    100%{
+        opacity: 1;
+    }
+}
+
+@keyframes change-color {
+    0%{
+        background-color: var(--explored-color-initial);
+    }
+    100%{
+        background-color: var(--explored-color-final);
+    }
+}
+

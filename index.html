@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>path-finding-algorithm-visualizer</title>
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/9784082340.js" 
+    crossorigin="anonymous"></script>
+    <!-- bootstap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" 
+        crossorigin="anonymous">
+    <!-- custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- scrips -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" 
+            crossorigin="anonymous"></script>
+    <script defer src="https://code.jquery.com/jquery-3.6.3.min.js" 
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" 
+            crossorigin="anonymous"></script>
+    <script defer src="js/PriorityQueue.js"></script>
+    <script defer src="js/grid.js"></script>
+    <script defer src="js/index.js"></script>
+
+    <!-- body -->
+    <!-- <div class="options-container d-flex justify-content-around w-100"> -->
+        <div class="">
+            <div class="options-container px-2">
+                <h1 class="title text-center">Path Finding Algorithm Visualizer </h1>
+                <div class="row">
+                    <div class="col-sm-4 col-lg-2 d-flex justify-content-center">
+                        <div id="algo-dropdown" class="dropdown">
+                            <button id="algo-dropdown-btn" class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Choose Algorithm
+                            </button>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="#" aria-label="Djikstra">Djikstra's</a></li>
+                              <li><a class="dropdown-item" href="#" aria-label="A*">A* Search</a></li>
+                            </ul>
+                          </div>
+                    </div>
+                    <div class="col-sm-3 d-flex justify-content-center">
+                        <div class="btn text-light">
+                            <label id="minSpeed" for="sortingSpeed">
+                                <i class="fas fa-walking"></i> Slow
+                            </label>
+                            <input id="sortingSpeed" class="slider" type="range" name="sortingSpeed" min="0" max="100"
+                                value="100">
+                            <label id="maxSpeed" for="sortingSpeed">
+                                Fast <i class="fas fa-running"></i>
+                            </label>
+                            <p>Speed: <span id="speedLabel">Fastest</span></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 d-flex justify-content-center">
+                        <button id="clear-walls-btn" class="my-2 btn btn-dark">Clear Walls</button>
+                    </div>
+                    <div class="col-sm-2 d-flex justify-content-center">
+                        <button id="clear-path-btn" class="my-2 btn btn-dark">Clear Path</button>
+                    </div>
+                    <div class="col-sm-2 d-flex justify-content-center">
+                        <button id="reset-btn" class="my-2 btn btn-dark">Reset</button>
+                    </div>
+                    <div class="col-sm-2 d-flex justify-content-center">
+                        <button id="visualize-btn" class="my-2 btn btn-success">Visualize</button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div id="maze" class="maze"></div>
+            </div>
+        </div>
+
+</body>
+</html>
