@@ -29,50 +29,14 @@ let {path:dijkstraPath, allNeighbours:exploredPaths} = MAZE.dijkstra(START,GOAL)
 // renders the maze with specified dimensions
 renderMaze("maze",MAZE_SIZE)
 
-async function findPathAstar() {
-    let {path, allNeighbours} = MAZE.Astar(START,GOAL);
-    clearPath();
-    clearExplored();
-    await animateExploration(allNeighbours);
-    if(!path || path.length === 0){
-        alert("No path exists")
-        return
-    }
-    if(path && path.length > 0)
-        renderPath(path)
-}
-
-async function findPathDjikstra() {
-    let {path, allNeighbours} = MAZE.dijkstra(START,GOAL);
-    clearPath();
-    clearExplored();
-    await animateExploration(allNeighbours);
-    if(!path || path.length === 0){
-        alert("No path exists")
-        return
-    }
-    if(path && path.length > 0)
-        renderPath(path)
-}
-
+// Renders the given path on the Maze
 function renderPath(path, isAnimated=true) {
     renderPathHelper(path, isAnimated)
     isPathVisible=true;
 }
 
+// Renders the explored nodes with animations
 async function animateExploration(explorations) {
-    await animateExplorationHelper(explorations)
-}
-
-async function renderPathHelper(path, isAnimated) {
-    for(let i=path.length-1;i>0;i--) {
-        const temp = path[i]
-        $(`#cell-${temp.y}-${temp.x}`).addClass("path");
-        if(isAnimated)
-            await timer(5)
-    }
-}
-async function animateExplorationHelper(explorations) {
     for(let i =0; i < explorations.length; ++i) {
         for(let j = 0;j<explorations[i].length; ++j) {
             const cell = explorations[i][j]
@@ -83,8 +47,29 @@ async function animateExplorationHelper(explorations) {
     }
 }
 
+// Helper to renderPath function
+async function renderPathHelper(path, isAnimated) {
+    for(let i=path.length-1;i>0;i--) {
+        const temp = path[i]
+        $(`#cell-${temp.y}-${temp.x}`).addClass("path");
+        if(isAnimated)
+            await timer(15)
+    }
+}
 
 
+// runs the animations using the given path and explored nodes
+async function run({path, allNeighbours}) {
+    clearPath();
+    clearExplored();
+    await animateExploration(allNeighbours);
+    if(!path || path.length === 0){
+        alert("No path exists")
+        return
+    }
+    if(path && path.length > 0)
+        renderPath(path, true)
+}
 
 
 // ******** Main Program End*********
@@ -101,14 +86,23 @@ $("#visualize-btn").on("click", async function(){
     const algo = $("#algo-dropdown-btn").text()
     switch(algo) {
         case "Djikstra":
-            await findPathDjikstra();
+            await run(MAZE.dijkstra(START,GOAL))
             break;
         case "A*":
-            await findPathAstar();
+            await run(MAZE.Astar(START,GOAL))
+            break;
+        case "BestFS":
+            await run(MAZE.bestFS(START,GOAL))
+            break;
+        case "BFS":
+            await run(MAZE.bfs(START,GOAL))
+            break;
+        case "DFS":
+            await run(MAZE.dfs(START,GOAL))
             break;
         default:
             alert("Please Select an algorithm");
-    }
+        }
     $(this).prop("disabled", false);
 })
 

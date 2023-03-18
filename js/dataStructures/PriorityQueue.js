@@ -27,6 +27,10 @@ class PriorityQueue {
     isEmpty() {
       return this.heap.length === 0;
     }
+
+    emptyQueue(){
+      this.heap = []
+    }
   
     siftUp(index) {
       let parent = Math.floor((index - 1) / 2);
