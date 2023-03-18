@@ -32,9 +32,6 @@ class Grid {
     dijkstra(start,end, allowDiagonals=false) {
         const startX = start.x
         const startY = start.y
-        
-        // const visited = Array.from({ length: this.size }, () => 
-        //                         Array.from({ length: this.size }, () => false));
 
         const distances = Array.from({ length: this.size }, () => 
                                 Array.from({ length: this.size }, () => Infinity));
@@ -49,7 +46,7 @@ class Grid {
         const allNeighbours = []
         while(!remaining.isEmpty()) {
             let curr = remaining.dequeue()
-            const neighbours = getNeighbours(this, curr)
+            const neighbours = this.getNeighbours(curr, allowDiagonals)
             neighbours.forEach(neighbour => {
                 const dist = distances[curr.y][curr.x] + 1;
                 if(isGood(neighbour, dist)) {
@@ -73,38 +70,6 @@ class Grid {
         }
 
         return {path, allNeighbours};
-
-
-        function getNeighbours(self, curr) {
-            const j = curr.x
-            const i = curr.y
-            const neighbours = []
-            if(i-1 >=0){
-                neighbours.push(self.grid[i-1][j])
-                if(allowDiagonals && (j+1 < self.size)) {
-                    neighbours.push(self.grid[i-1][j+1])
-                }
-            }
-            if(j+1 < self.size){
-                neighbours.push(self.grid[i][j+1])
-                if(allowDiagonals && (i+1 < self.size)) {
-                    neighbours.push(self.grid[i+1][j+1])
-                }
-            }
-            if(i+1 < self.size){
-                neighbours.push(self.grid[i+1][j])
-                if(allowDiagonals && (j-1 >= 0)) {
-                    neighbours.push(self.grid[i+1][j-1])
-                }
-            }
-            if(j-1 >=0){
-                neighbours.push(self.grid[i][j-1])
-                if(allowDiagonals && (i-1 >= 0)) {
-                    neighbours.push(self.grid[i-1][j-1])
-                }
-            }
-            return neighbours;
-        }
 
         function isGood(neighbour,newDist) {
             return !neighbour.isWall && (distances[neighbour.y][neighbour.x] > newDist)
@@ -132,7 +97,7 @@ class Grid {
         const allNeighbours = []
         while(!remaining.isEmpty()) {
             let curr = remaining.dequeue()
-            const neighbours = getNeighbours(this, curr)
+            const neighbours = this.getNeighbours(curr, allowDiagonals)
             neighbours.forEach(neighbour => {
                 const dist = distances[curr.y][curr.x] + 1;
                 heuristics[neighbour.y][neighbour.x] = calcHeuristic(neighbour)
@@ -158,38 +123,6 @@ class Grid {
 
         return {path, allNeighbours};
 
-
-        function getNeighbours(self, curr) {
-            const j = curr.x
-            const i = curr.y
-            const neighbours = []
-            if(i-1 >=0){
-                neighbours.push(self.grid[i-1][j])
-                if(allowDiagonals && (j+1 < self.size)) {
-                    neighbours.push(self.grid[i-1][j+1])
-                }
-            }
-            if(j+1 < self.size){
-                neighbours.push(self.grid[i][j+1])
-                if(allowDiagonals && (i+1 < self.size)) {
-                    neighbours.push(self.grid[i+1][j+1])
-                }
-            }
-            if(i+1 < self.size){
-                neighbours.push(self.grid[i+1][j])
-                if(allowDiagonals && (j-1 >= 0)) {
-                    neighbours.push(self.grid[i+1][j-1])
-                }
-            }
-            if(j-1 >=0){
-                neighbours.push(self.grid[i][j-1])
-                if(allowDiagonals && (i-1 >= 0)) {
-                    neighbours.push(self.grid[i-1][j-1])
-                }
-            }
-            return neighbours;
-        }
-
         function isGood(neighbour,newDist) {
             return !neighbour.isWall && (distances[neighbour.y][neighbour.x] > newDist)
         }
@@ -201,6 +134,7 @@ class Grid {
         }
 
     }
+
     bestFS(start,end, allowDiagonals=false) {
         const startX = start.x
         const startY = start.y
@@ -220,13 +154,11 @@ class Grid {
         const allNeighbours = []
         while(!remaining.isEmpty()) {
             let curr = remaining.dequeue()
-            const neighbours = getNeighbours(this, curr)
+            const neighbours = this.getNeighbours(curr, allowDiagonals)
             neighbours.forEach(neighbour => {
-                // const dist = distances[curr.y][curr.x] + 1;
                 heuristics[neighbour.y][neighbour.x] = calcHeuristic(neighbour)
                 console.log(heuristics[neighbour.y][neighbour.x]);
                 if(isGood(neighbour)) {
-                    // distances[neighbour.y][neighbour.x] = dist
                     visited[neighbour.y][neighbour.x] = true
                     predecessor[neighbour.y][neighbour.x] = curr
                     remaining.enqueue(neighbour, heuristics[neighbour.y][neighbour.x])
@@ -249,38 +181,6 @@ class Grid {
 
         return {path, allNeighbours};
 
-
-        function getNeighbours(self, curr) {
-            const j = curr.x
-            const i = curr.y
-            const neighbours = []
-            if(i-1 >=0){
-                neighbours.push(self.grid[i-1][j])
-                if(allowDiagonals && (j+1 < self.size)) {
-                    neighbours.push(self.grid[i-1][j+1])
-                }
-            }
-            if(j+1 < self.size){
-                neighbours.push(self.grid[i][j+1])
-                if(allowDiagonals && (i+1 < self.size)) {
-                    neighbours.push(self.grid[i+1][j+1])
-                }
-            }
-            if(i+1 < self.size){
-                neighbours.push(self.grid[i+1][j])
-                if(allowDiagonals && (j-1 >= 0)) {
-                    neighbours.push(self.grid[i+1][j-1])
-                }
-            }
-            if(j-1 >=0){
-                neighbours.push(self.grid[i][j-1])
-                if(allowDiagonals && (i-1 >= 0)) {
-                    neighbours.push(self.grid[i-1][j-1])
-                }
-            }
-            return neighbours;
-        }
-
         function isGood(neighbour) {
             return !neighbour.isWall && !visited[neighbour.y][neighbour.x];
         }
@@ -296,9 +196,6 @@ class Grid {
     bfs(start,end, allowDiagonals=false) {
         const startX = start.x
         const startY = start.y
-        
-        // const visited = Array.from({ length: this.size }, () => 
-        //                         Array.from({ length: this.size }, () => false));
 
         const distances = Array.from({ length: this.size }, () => 
                                 Array.from({ length: this.size }, () => Infinity));
@@ -313,7 +210,7 @@ class Grid {
         const allNeighbours = []
         while(!remaining.isEmpty()) {
             let curr = remaining.dequeue()
-            const neighbours = getNeighbours(this, curr)
+            const neighbours = this.getNeighbours(curr, allowDiagonals)
             neighbours.forEach(neighbour => {
                 const dist = distances[curr.y][curr.x] + 1;
                 if(isGood(neighbour, dist)) {
@@ -338,53 +235,18 @@ class Grid {
 
         return {path, allNeighbours};
 
-
-        function getNeighbours(self, curr) {
-            const j = curr.x
-            const i = curr.y
-            const neighbours = []
-            if(i-1 >=0){
-                neighbours.push(self.grid[i-1][j])
-                if(allowDiagonals && (j+1 < self.size)) {
-                    neighbours.push(self.grid[i-1][j+1])
-                }
-            }
-            if(j+1 < self.size){
-                neighbours.push(self.grid[i][j+1])
-                if(allowDiagonals && (i+1 < self.size)) {
-                    neighbours.push(self.grid[i+1][j+1])
-                }
-            }
-            if(i+1 < self.size){
-                neighbours.push(self.grid[i+1][j])
-                if(allowDiagonals && (j-1 >= 0)) {
-                    neighbours.push(self.grid[i+1][j-1])
-                }
-            }
-            if(j-1 >=0){
-                neighbours.push(self.grid[i][j-1])
-                if(allowDiagonals && (i-1 >= 0)) {
-                    neighbours.push(self.grid[i-1][j-1])
-                }
-            }
-            return neighbours;
-        }
-
         function isGood(neighbour,newDist) {
             return !neighbour.isWall && (distances[neighbour.y][neighbour.x] > newDist)
         }
 
     }
+    
     dfs(start,end, allowDiagonals=false) {
         const startX = start.x
         const startY = start.y
         
         const visited = Array.from({ length: this.size }, () => 
                                 Array.from({ length: this.size }, () => false));
-
-        // const distances = Array.from({ length: this.size }, () => 
-        //                         Array.from({ length: this.size }, () => Infinity));
-        // distances[startY][startX] = 0;
 
         const predecessor = Array.from({ length: this.size }, () => 
                                 Array.from({ length: this.size }, () => null));
@@ -395,7 +257,7 @@ class Grid {
         const allNeighbours = []
         while(!remaining.isEmpty()) {
             let curr = remaining.pop()
-            const neighbours = getNeighbours(this, curr)
+            const neighbours = this.getNeighbours(curr, allowDiagonals)
             neighbours.forEach(neighbour => {
                 if(isGood(neighbour)) {
                     visited[neighbour.y][neighbour.x] = true
@@ -419,41 +281,41 @@ class Grid {
 
         return {path, allNeighbours};
 
-
-        function getNeighbours(self, curr) {
-            const j = curr.x
-            const i = curr.y
-            const neighbours = []
-            if(i-1 >=0){
-                neighbours.push(self.grid[i-1][j])
-                if(allowDiagonals && (j+1 < self.size)) {
-                    neighbours.push(self.grid[i-1][j+1])
-                }
-            }
-            if(j+1 < self.size){
-                neighbours.push(self.grid[i][j+1])
-                if(allowDiagonals && (i+1 < self.size)) {
-                    neighbours.push(self.grid[i+1][j+1])
-                }
-            }
-            if(i+1 < self.size){
-                neighbours.push(self.grid[i+1][j])
-                if(allowDiagonals && (j-1 >= 0)) {
-                    neighbours.push(self.grid[i+1][j-1])
-                }
-            }
-            if(j-1 >=0){
-                neighbours.push(self.grid[i][j-1])
-                if(allowDiagonals && (i-1 >= 0)) {
-                    neighbours.push(self.grid[i-1][j-1])
-                }
-            }
-            return neighbours;
-        }
-
         function isGood(neighbour) {
             return !neighbour.isWall && (!visited[neighbour.y][neighbour.x])
         }
 
+    }
+
+    // Returns the neighbouring nodes of the given node "curr".
+    getNeighbours(curr, allowDiagonals=false) {
+        const j = curr.x
+        const i = curr.y
+        const neighbours = []
+        if(i-1 >=0){
+            neighbours.push(this.grid[i-1][j])
+            if(allowDiagonals && (j+1 < this.size)) {
+                neighbours.push(this.grid[i-1][j+1])
+            }
+        }
+        if(j+1 < this.size){
+            neighbours.push(this.grid[i][j+1])
+            if(allowDiagonals && (i+1 < this.size)) {
+                neighbours.push(this.grid[i+1][j+1])
+            }
+        }
+        if(i+1 < this.size){
+            neighbours.push(this.grid[i+1][j])
+            if(allowDiagonals && (j-1 >= 0)) {
+                neighbours.push(this.grid[i+1][j-1])
+            }
+        }
+        if(j-1 >=0){
+            neighbours.push(this.grid[i][j-1])
+            if(allowDiagonals && (i-1 >= 0)) {
+                neighbours.push(this.grid[i-1][j-1])
+            }
+        }
+        return neighbours;
     }
 }
